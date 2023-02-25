@@ -1,0 +1,64 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WPU Admin Launcher\n"
+"POT-Creation-Date: 2023-02-25 19:59+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: __;_x;_e\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-SearchPath-0: ../.\n"
+"X-Poedit-SearchPathExcluded-0: inc/WPUBaseAdminDatas\n"
+"X-Poedit-SearchPathExcluded-1: inc/WPUBaseSettings\n"
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:136
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:552
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:559
+msgid "Settings"
+msgstr ""
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:165
+msgid "No"
+msgstr ""
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:165
+msgid "Yes"
+msgstr ""
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:301
+msgid "Settings saved."
+msgstr ""
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:347
+msgid "Upload New Media"
+msgstr ""
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:498
+msgid "Language"
+msgstr ""
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:574
+msgid "Save"
+msgstr ""
+
+#: .././wpuadminlauncher.php:39
+msgid "WPU Admin Launcher is a simple tasks launcher. Just press CMD+k and enjoy."
+msgstr "WPU Admin Launcher est un lanceur de tâches simple. Appuyez sur CMD + k et profitez-en."
+
+#: .././wpuadminlauncher.php:51
+msgid "Import Settings"
+msgstr ""
+
+#: .././wpuadminlauncher.php:57
+msgid "My Value"
+msgstr ""
+
+#: .././wpuadminlauncher.php:58
+msgid "A little help."
+msgstr ""

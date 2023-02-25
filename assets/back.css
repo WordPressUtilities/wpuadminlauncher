@@ -1,0 +1,90 @@
+@charset "UTF-8";
+
+/* ----------------------------------------------------------
+  Wrapper
+---------------------------------------------------------- */
+
+.wpuadminlauncher {
+    z-index: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    box-sizing: border-box;
+    width: 600px;
+    margin: auto;
+    padding: 2em;
+    border-radius: 1em;
+    background-color: #fff;
+    box-shadow: 0 0 10vh 0 rgba(0, 0, 0, 0.7);
+    transition: opacity 0.3s ease;
+    transform: translate3d(-50%,-50%,0);
+}
+
+body:not([data-wpuadminlauncher-visible="1"]) .wpuadminlauncher {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.wpuadminlauncher__inner {
+    z-index: 1;
+    position: relative;
+    padding-bottom: 1px;
+}
+
+/* ----------------------------------------------------------
+  Input
+---------------------------------------------------------- */
+
+.wpuadminlauncherinput {
+    display: block;
+    width: 100%;
+}
+
+.wpuadminlauncherinput,
+.wpuadminlauncher-autocomplete li a {
+    padding: 0 1em;
+    font-size: 16px;
+}
+
+/* ----------------------------------------------------------
+  Autocomplete
+---------------------------------------------------------- */
+
+.wpuadminlauncher-autocomplete {
+    z-index: 1;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: -1px;
+    border: 1px solid #F0F0F0;
+    border-width: 0 1px 1px;
+    background-color: #fff;
+}
+
+.wpuadminlauncher-autocomplete:not([data-has-results="1"]) {
+    display: none;
+}
+
+.wpuadminlauncher-autocomplete ul {
+    margin: 0;
+    max-height: 40vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.wpuadminlauncher-autocomplete li {
+    margin: 0;
+    line-height: 2;
+    transition: background 0.3s ease;
+}
+
+.wpuadminlauncher-autocomplete li a {
+    display: block;
+}
+
+.wpuadminlauncher-autocomplete li:hover,
+.wpuadminlauncher-autocomplete li[data-active="1"] {
+    background-color: #F0F0F0;
+}

@@ -16,6 +16,7 @@ WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and en
 ### Features
 
 - [ ] Better accessibility.
+- [ ] Add autoupdate.
 - [ ] Hook for items.
 - [ ] Fuzzy search.
 - [ ] Ajax search on a special argument : users if list is available, posts, etc.

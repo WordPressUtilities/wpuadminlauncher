@@ -13,6 +13,7 @@
     width: 600px;
     margin: auto;
     padding: 2em;
+    max-width: 90vw;
     border-radius: 1em;
     background-color: #fff;
     box-shadow: 0 0 10vh 0 rgba(0, 0, 0, 0.7);
@@ -80,8 +81,31 @@ body:not([data-wpuadminlauncher-visible="1"]) .wpuadminlauncher {
     transition: background 0.3s ease;
 }
 
-.wpuadminlauncher-autocomplete li a {
+.wpuadminlauncher-autocomplete li .inner {
     display: block;
+    z-index: 1;
+    position: relative;
+    padding-right: 1em;
+    padding-left: 2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    line-height: inherit;
+    white-space: nowrap;
+}
+
+.wpuadminlauncher-autocomplete li .inner .dashicons {
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 2em;
+    margin-top: 2px;
+    text-align: center;
+    text-decoration: none;
+    font-size: inherit;
+    color: #CCC;
+    transform: translateY(-50%);
 }
 
 .wpuadminlauncher-autocomplete li:hover,

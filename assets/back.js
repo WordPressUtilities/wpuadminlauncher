@@ -8,7 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
         list_selected_index = -1,
         list_active_results = [],
         list_max_results = 0,
-        list_selected_value = '';
+        list_selected_item = false;
+
+    if (!$input) {
+        return;
+    }
 
     var _letter = 'k';
     if (wpuadminlauncher_settings.letter.match(/^[a-z]$/)) {
@@ -16,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /* Toggle launcher */
-    document.addEventListener('keydown', function(e) {
+    window.addEventListener('keydown', function(e) {
         if ((e.metaKey || e.ctrlKey) && e.key == _letter && !launcher_visible) {
             display_launcher();
         }
@@ -73,8 +77,20 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+        /* Extract actions */
+        Array.prototype.forEach.call(document.querySelectorAll('.submitbox input[type="submit"]'), function(el, i) {
+            wpuadminlauncher_settings.wpuadminlauncheritems.push({
+                'label': el.value,
+                'icon': 'dashicons-button',
+                'click': '#' + el.getAttribute('id')
+            });
+        });
+
         /* Clean values */
         for (var i = 0, len = wpuadminlauncher_settings.wpuadminlauncheritems.length; i < len; i++) {
+            if (!wpuadminlauncher_settings.wpuadminlauncheritems[i].icon) {
+                wpuadminlauncher_settings.wpuadminlauncheritems[i].icon = 'dashicons-admin-links';
+            }
             wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel = wpuadminlauncher_settings.wpuadminlauncheritems[i].label.toLowerCase();
         }
 
@@ -97,11 +113,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (e.key == 'Enter') {
             e.preventDefault();
-            if (list_selected_value) {
-                window.location.href = list_selected_value;
-            }
+            trigger_selected_item();
         }
     });
+    $autocompleteWrap.addEventListener('click', function(e) {
+        var $item = false;
+        if (e.target.getAttribute('data-i')) {
+            $item = e.target;
+        }
+        if (e.target.parentNode.getAttribute('data-i')) {
+            $item = e.target.parentNode;
+        }
+        if ($item) {
+            list_selected_index = parseInt($item.getAttribute('data-i'), 10);
+            set_active_index();
+            trigger_selected_item();
+        }
+    });
+
+    function trigger_selected_item() {
+        if (!list_selected_item) {
+            return;
+        }
+        if (list_selected_item.link) {
+            window.location.href = list_selected_item.link;
+        }
+        if (list_selected_item.click) {
+            document.querySelector(list_selected_item.click).click();
+        }
+    }
 
     function set_active_index() {
         if (!list_active_results) {
@@ -118,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var isActiveItem = (i == list_selected_index);
             item.setAttribute('data-active', isActiveItem ? '1' : '0');
             if (isActiveItem) {
-                list_selected_value = list_active_results[i].link;
+                list_selected_item = list_active_results[i];
             }
         });
 
@@ -132,14 +172,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         /* Extract all words and init list */
-        var list_html = '',
+        var list_html = [],
             val = this.value.toLowerCase().split(' ').filter(function(el) {
                 return el;
             });
 
         /* Reset index */
         list_selected_index = -1;
-        list_selected_value = '';
+        list_selected_item = false;
         list_max_results = -1;
         list_active_results = [];
 
@@ -147,9 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (val.length) {
             for (var i = 0, len = wpuadminlauncher_settings.wpuadminlauncheritems.length; i < len; i++) {
                 if (words_are_all_in_text(val, wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel)) {
-                    list_html += '<li data-value="' + wpuadminlauncher_settings.wpuadminlauncheritems[i].link + '">';
-                    list_html += '<a href="' + wpuadminlauncher_settings.wpuadminlauncheritems[i].link + '">' + wpuadminlauncher_settings.wpuadminlauncheritems[i].label + '</a>';
-                    list_html += '</li>';
+                    list_html.push(build_list_item(i));
                     list_max_results++;
                     list_active_results.push(wpuadminlauncher_settings.wpuadminlauncheritems[i]);
                 }
@@ -157,10 +195,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         /* Fill list element and mark first item as active*/
-        $list.innerHTML = list_html;
+        $list.innerHTML = list_html.join('');
         set_active_index();
         $autocompleteWrap.setAttribute('data-has-results', list_html ? 1 : 0);
     });
+
+    function build_list_item(i) {
+        var list_html = '<li data-value="' + wpuadminlauncher_settings.wpuadminlauncheritems[i].link + '">';
+        list_html += '<span class="inner" data-i="' + i + '">';
+        list_html += '<span class="dashicons ' + wpuadminlauncher_settings.wpuadminlauncheritems[i].icon + '"></span>';
+        list_html += wpuadminlauncher_settings.wpuadminlauncheritems[i].label;
+        list_html += '</span>';
+        list_html += '</li>';
+        return list_html;
+    }
 
     /* Check if all words are present in a text */
     function words_are_all_in_text(words, text) {

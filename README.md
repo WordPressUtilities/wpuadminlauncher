@@ -8,6 +8,7 @@ WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and en
 - [x] Click outside to close.
 - [x] Use every word in the query to target
 - [x] Support for Ctrl+k.
+- [x] Actions on current page
 - [ ] Hook for items.
 - [ ] Sort items by name.
 - [ ] Fuzzy search.
@@ -16,4 +17,4 @@ WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and en
 - [ ] Handle accents.
 - [ ] Better responsive.
 - [ ] X to close.
-- [ ] Actions on current page
+- [ ] Up-down in the list : scroll to ensure the selected result is displayed.

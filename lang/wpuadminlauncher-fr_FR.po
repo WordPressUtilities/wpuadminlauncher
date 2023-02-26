@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Admin Launcher\n"
-"POT-Creation-Date: 2023-02-25 19:59+0100\n"
+"POT-Creation-Date: 2023-02-26 10:38+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,8 +20,9 @@ msgstr ""
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:136
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:552
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:559
+#: .././wpuadminlauncher.php:51
 msgid "Settings"
-msgstr ""
+msgstr "Réglages"
 
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:165
 msgid "No"
@@ -33,7 +34,7 @@ msgstr ""
 
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:301
 msgid "Settings saved."
-msgstr ""
+msgstr "Paramètres sauvegardés."
 
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:347
 msgid "Upload New Media"
@@ -41,24 +42,32 @@ msgstr ""
 
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:498
 msgid "Language"
-msgstr ""
+msgstr "Langue"
 
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:574
 msgid "Save"
-msgstr ""
+msgstr "Sauvegarder"
 
 #: .././wpuadminlauncher.php:39
-msgid "WPU Admin Launcher is a simple tasks launcher. Just press CMD+k and enjoy."
-msgstr "WPU Admin Launcher est un lanceur de tâches simple. Appuyez sur CMD + k et profitez-en."
-
-#: .././wpuadminlauncher.php:51
-msgid "Import Settings"
+msgid ""
+"WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k "
+"and enjoy."
 msgstr ""
+"WPU Admin Launcher est un lanceur de tâches simple. Appuyez sur CMD+k or "
+"Ctrl+k et profitez."
 
-#: .././wpuadminlauncher.php:57
-msgid "My Value"
-msgstr ""
+#: .././wpuadminlauncher.php:55
+msgid "Default (K)"
+msgstr "Valeur par défaut (K)"
 
-#: .././wpuadminlauncher.php:58
-msgid "A little help."
-msgstr ""
+#: .././wpuadminlauncher.php:62
+msgid "Shortcut"
+msgstr "Raccourci"
+
+#: .././wpuadminlauncher.php:64
+msgid "Press CMD + this letter"
+msgstr "Appuyez sur CMD + cette lettre"
+
+#: .././wpuadminlauncher.php:86
+msgid "Type where you wish to go and press the Enter key"
+msgstr "Tapez où vous souhaitez aller et appuyez sur la touche Entrée"

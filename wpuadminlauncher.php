@@ -3,8 +3,8 @@
 Plugin Name: WPU Admin Launcher
 Plugin URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Update URI: https://github.com/WordPressUtilities/wpuadminlauncher
-Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k and enjoy.
-Version: 0.1.0
+Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
+Version: 0.2.0
 Author: Darklg
 Author URI: https://Darklg.me/
 Text Domain: wpuadminlauncher
@@ -14,7 +14,7 @@ License URI: https://opensource.org/licenses/MIT
 */
 
 class WPUAdminLauncher {
-    private $plugin_version = '0.1.0';
+    private $plugin_version = '0.2.0';
     private $plugin_settings = array(
         'id' => 'wpuadminlauncher',
         'name' => 'WPU Admin Launcher'
@@ -36,7 +36,7 @@ class WPUAdminLauncher {
         if (!load_plugin_textdomain('wpuadminlauncher', false, dirname(plugin_basename(__FILE__)) . '/lang/')) {
             load_muplugin_textdomain('wpuadminlauncher', dirname(plugin_basename(__FILE__)) . '/lang/');
         }
-        $this->plugin_description = __('WPU Admin Launcher is a simple tasks launcher. Just press CMD+k and enjoy.', 'wpuadminlauncher');
+        $this->plugin_description = __('WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.', 'wpuadminlauncher');
         # SETTINGS
         $this->settings_details = array(
             # Admin page
@@ -47,16 +47,22 @@ class WPUAdminLauncher {
             'plugin_id' => $this->plugin_settings['id'],
             'option_id' => $this->plugin_settings['id'] . '_options',
             'sections' => array(
-                'import' => array(
-                    'name' => __('Import Settings', 'wpuadminlauncher')
+                'default' => array(
+                    'name' => __('Settings', 'wpuadminlauncher')
                 )
             )
         );
+        $letters = array(__('Default (K)', 'wpuadminlauncher'));
+        $raw_letters = str_split('ijku');
+        foreach ($raw_letters as $letter) {
+            $letters[$letter] = ucfirst($letter);
+        }
         $this->settings = array(
-            'value' => array(
-                'label' => __('My Value', 'wpuadminlauncher'),
-                'help' => __('A little help.', 'wpuadminlauncher'),
-                'type' => 'textarea'
+            'letter' => array(
+                'label' => __('Shortcut', 'wpuadminlauncher'),
+                'type' => 'select',
+                'help' => __('Press CMD + this letter', 'wpuadminlauncher'),
+                'datas' => $letters
             )
         );
         include dirname(__FILE__) . '/inc/WPUBaseSettings/WPUBaseSettings.php';
@@ -70,12 +76,17 @@ class WPUAdminLauncher {
         /* Back Script */
         wp_register_script('wpuadminlauncher_back_script', plugins_url('assets/back.js', __FILE__), array(), $this->plugin_version, true);
         wp_enqueue_script('wpuadminlauncher_back_script');
+        wp_localize_script('wpuadminlauncher_back_script', 'wpuadminlauncher_settings', array(
+            'wpuadminlauncheritems' => array(),
+            'letter' => $this->settings_obj->get_setting('letter')
+        ));
     }
 
     public function display_launcher() {
-        echo '<div class="wpuadminlauncher">';
+        $placeholder = __('Type where you wish to go and press the Enter key', 'wpuadminlauncher');
+        echo '<div id="wpuadminlauncher" class="wpuadminlauncher">';
         echo '<div class="wpuadminlauncher__inner">';
-        echo '<input class="wpuadminlauncherinput" name="wpuadminlauncherinput" id="wpuadminlauncherinput" type="text" />';
+        echo '<input class="wpuadminlauncherinput" name="wpuadminlauncherinput" id="wpuadminlauncherinput" type="text" placeholder="' . esc_attr($placeholder) . '" />';
         echo '<div id="wpuadminlauncher-autocomplete" class="wpuadminlauncher-autocomplete"><ul id="wpuadminlauncher-autocomplete-list">';
         echo '</ul></div>';
         echo '</div>';

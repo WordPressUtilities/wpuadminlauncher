@@ -23,8 +23,9 @@ WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and en
 
 ### Quality of life
 
-- [ ] Handle accents.
+- [x] Handle accents.
 - [ ] Better innertext behavior with counters in menu name.
 - [ ] Sort items by name.
 - [ ] X to close.
 - [ ] Up-down in the list : scroll to ensure the selected result is displayed.
+- [ ] Propose it on the official repository ?

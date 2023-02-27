@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!wpuadminlauncher_settings.wpuadminlauncheritems[i].icon) {
                 wpuadminlauncher_settings.wpuadminlauncheritems[i].icon = 'dashicons-admin-links';
             }
-            wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel = wpuadminlauncher_settings.wpuadminlauncheritems[i].label.toLowerCase();
+            wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel = clean_string(wpuadminlauncher_settings.wpuadminlauncheritems[i].label);
         }
 
     }());
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         /* Extract all words and init list */
         var list_html = [],
-            val = this.value.toLowerCase().split(' ').filter(function(el) {
+            val = clean_string(this.value).split(' ').filter(function(el) {
                 return el;
             });
 
@@ -199,6 +199,14 @@ document.addEventListener('DOMContentLoaded', function() {
         set_active_index();
         $autocompleteWrap.setAttribute('data-has-results', list_html ? 1 : 0);
     });
+
+    function clean_string(str){
+        str = str.toLowerCase();
+        if(str.normalize){
+            str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+        return str;
+    }
 
     function build_list_item(i) {
         var list_html = '<li data-value="' + wpuadminlauncher_settings.wpuadminlauncheritems[i].link + '">';

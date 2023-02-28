@@ -104,12 +104,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key == 'ArrowDown') {
             e.preventDefault();
             list_selected_index++;
-            set_active_index();
+            set_active_index('down');
         }
         if (e.key == 'ArrowUp') {
             e.preventDefault();
             list_selected_index--;
-            set_active_index();
+            set_active_index('up');
         }
         if (e.key == 'Enter') {
             e.preventDefault();
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function set_active_index() {
+    function set_active_index(dir) {
         if (!list_active_results) {
             return;
         }
@@ -153,11 +153,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (list_selected_index > list_max_results) {
             list_selected_index = list_max_results;
         }
-        var list_items = $list.querySelectorAll('li[data-value]');
+        var list_items = $list.querySelectorAll('li[data-value]'),
+            list_height = $list.offsetHeight;
         Array.prototype.forEach.call(list_items, function(item, i) {
             var isActiveItem = (i == list_selected_index);
             item.setAttribute('data-active', isActiveItem ? '1' : '0');
             if (isActiveItem) {
+                if (dir) {
+                    var scrollPosTop = item.offsetTop + item.offsetHeight;
+                    if (dir == 'down' && scrollPosTop > list_height) {
+                        $list.scrollTop = scrollPosTop - list_height;
+                    }
+                    if (dir == 'up' && $list.scrollTop > item.offsetTop) {
+                        $list.scrollTop = item.offsetTop;
+                    }
+                }
                 list_selected_item = list_active_results[i];
             }
         });
@@ -200,9 +210,9 @@ document.addEventListener('DOMContentLoaded', function() {
         $autocompleteWrap.setAttribute('data-has-results', list_html ? 1 : 0);
     });
 
-    function clean_string(str){
+    function clean_string(str) {
         str = str.toLowerCase();
-        if(str.normalize){
+        if (str.normalize) {
             str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         }
         return str;

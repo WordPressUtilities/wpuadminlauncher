@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         launcher_visible = true;
         document.body.setAttribute('data-wpuadminlauncher-visible', '1');
         $input.focus();
+        load_autocomplete_post_types();
     }
 
     function hide_launcher() {
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     /* Build autocomplete values */
     (function() {
         /* Extract menu values */
-        Array.prototype.forEach.call(document.querySelectorAll('#adminmenu > li'), function(el, i) {
+        Array.prototype.forEach.call(document.querySelectorAll('#wp-admin-bar-w3tc, #adminmenu > li'), function(el, i) {
             var $menu = el.querySelector('a:first-child');
             if (!$menu) {
                 return;
@@ -94,7 +95,30 @@ document.addEventListener('DOMContentLoaded', function() {
             wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel = clean_string(wpuadminlauncher_settings.wpuadminlauncheritems[i].label);
         }
 
+        /* Sort results */
+        wpuadminlauncher_settings.wpuadminlauncheritems.sort(function(a, b) {
+            return a.label.localeCompare(b.label);
+        });
     }());
+
+    function load_autocomplete_post_types() {
+        if (wpuadminlauncher_settings.post_types_content) {
+            return;
+        }
+        jQuery.post(wpuadminlauncher_settings.ajax_url, {
+            'action': 'wpuadminlauncher_posttypes',
+        }, function(response) {
+            wpuadminlauncher_settings.post_types_content = response.data.post_types;
+            for (var i = 0, len = response.data.posts.length; i < len; i++) {
+                wpuadminlauncher_settings.wpuadminlauncheritems.push({
+                    'label': response.data.post_types[response.data.posts[i].pt].label + ' &gt; ' + response.data.posts[i].ti,
+                    'icon': response.data.post_types[response.data.posts[i].pt].icon,
+                    'link': wpuadminlauncher_settings.edit_url + response.data.posts[i].id,
+                    'cleanlabel': clean_string(response.data.posts[i].ti)
+                });
+            }
+        });
+    }
 
     /* Display autocomplete
     -------------------------- */
@@ -195,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         /* Build list */
         if (val.length) {
+            /* Load actions */
             for (var i = 0, len = wpuadminlauncher_settings.wpuadminlauncheritems.length; i < len; i++) {
                 if (words_are_all_in_text(val, wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel)) {
                     list_html.push(build_list_item(i));

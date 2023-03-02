@@ -4,7 +4,7 @@ Plugin Name: WPU Admin Launcher
 Plugin URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Update URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
-Version: 0.4.0
+Version: 0.5.0
 Author: Darklg
 Author URI: https://Darklg.me/
 Text Domain: wpuadminlauncher
@@ -14,7 +14,7 @@ License URI: https://opensource.org/licenses/MIT
 */
 
 class WPUAdminLauncher {
-    private $plugin_version = '0.4.0';
+    private $plugin_version = '0.5.0';
     private $plugin_settings = array(
         'id' => 'wpuadminlauncher',
         'name' => 'WPU Admin Launcher'
@@ -69,11 +69,16 @@ class WPUAdminLauncher {
         $this->settings_obj = new \wpuadminlauncher\WPUBaseSettings($this->settings_details, $this->settings);
 
         # Auto update
-        include dirname( __FILE__ ) . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
+        include dirname(__FILE__) . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
         $this->settings_update = new \wpuadminlauncher\WPUBaseUpdate(
             'WordPressUtilities',
             'wpuadminlauncher',
             $this->plugin_version);
+
+        # AJAX
+        if (is_admin() && is_user_logged_in()) {
+            add_action('wp_ajax_wpuadminlauncher_posttypes', array(&$this, 'wpuadminlauncher_posttypes'));
+        }
     }
 
     public function admin_enqueue_scripts() {
@@ -85,6 +90,8 @@ class WPUAdminLauncher {
         wp_enqueue_script('wpuadminlauncher_back_script');
         wp_localize_script('wpuadminlauncher_back_script', 'wpuadminlauncher_settings', array(
             'wpuadminlauncheritems' => array(),
+            'edit_url' => admin_url('post.php?action=edit&post='),
+            'ajax_url' => admin_url('admin-ajax.php'),
             'letter' => $this->settings_obj->get_setting('letter')
         ));
     }
@@ -98,6 +105,49 @@ class WPUAdminLauncher {
         echo '</ul></div>';
         echo '</div>';
         echo '</div>';
+    }
+
+    function wpuadminlauncher_posttypes() {
+        /* Get all post types */
+        $post_types = get_post_types(array(
+            'public' => true
+        ), 'objects');
+        if (isset($post_types['attachment'])) {
+            unset($post_types['attachment']);
+        }
+
+        /* Get only needed fields in query */
+        add_filter('posts_fields', function ($fields) {
+            return 'ID,post_title';
+        });
+
+        $post_type_obj = array();
+        $posts = array();
+        foreach ($post_types as $pt => $post_type) {
+            $post_type_obj[$pt] = array(
+                'icon' => $post_type->menu_icon,
+                'label' => $post_type->label
+            );
+
+            $items = get_posts(array(
+                'orderby' => 'name',
+                'order' => 'ASC',
+                'post_type' => $pt,
+                'posts_per_page' => 500
+            ));
+            foreach ($items as $item) {
+                $posts[] = array(
+                    'pt' => $pt,
+                    'id' => $item->ID,
+                    'ti' => $item->post_title
+                );
+            }
+        }
+
+        wp_send_json_success(array(
+            'posts' => $posts,
+            'post_types' => $post_type_obj
+        ));
     }
 }
 

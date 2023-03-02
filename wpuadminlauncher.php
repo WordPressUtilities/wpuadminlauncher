@@ -4,7 +4,7 @@ Plugin Name: WPU Admin Launcher
 Plugin URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Update URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
-Version: 0.5.0
+Version: 0.5.1
 Author: Darklg
 Author URI: https://Darklg.me/
 Text Domain: wpuadminlauncher
@@ -14,7 +14,7 @@ License URI: https://opensource.org/licenses/MIT
 */
 
 class WPUAdminLauncher {
-    private $plugin_version = '0.5.0';
+    private $plugin_version = '0.5.1';
     private $plugin_settings = array(
         'id' => 'wpuadminlauncher',
         'name' => 'WPU Admin Launcher'
@@ -108,6 +108,9 @@ class WPUAdminLauncher {
     }
 
     function wpuadminlauncher_posttypes() {
+
+        global $wp_post_statuses;
+
         /* Get all post types */
         $post_types = get_post_types(array(
             'public' => true
@@ -118,7 +121,7 @@ class WPUAdminLauncher {
 
         /* Get only needed fields in query */
         add_filter('posts_fields', function ($fields) {
-            return 'ID,post_title';
+            return 'ID,post_title,post_status';
         });
 
         $post_type_obj = array();
@@ -133,13 +136,24 @@ class WPUAdminLauncher {
                 'orderby' => 'name',
                 'order' => 'ASC',
                 'post_type' => $pt,
+                'post_status' => array(
+                    'publish',
+                    'pending',
+                    'draft',
+                    'future',
+                    'private'
+                ),
                 'posts_per_page' => 500
             ));
             foreach ($items as $item) {
+                $title = $item->post_title;
+                if ($item->post_status != 'publish' && isset($wp_post_statuses) && is_array($wp_post_statuses)) {
+                    $title .= ' (' . $wp_post_statuses[$item->post_status]->label . ')';
+                }
                 $posts[] = array(
                     'pt' => $pt,
                     'id' => $item->ID,
-                    'ti' => $item->post_title
+                    'ti' => $title
                 );
             }
         }

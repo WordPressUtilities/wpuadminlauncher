@@ -108,13 +108,15 @@ document.addEventListener('DOMContentLoaded', function() {
         jQuery.post(wpuadminlauncher_settings.ajax_url, {
             'action': 'wpuadminlauncher_posttypes',
         }, function(response) {
+            var post_title;
             wpuadminlauncher_settings.post_types_content = response.data.post_types;
             for (var i = 0, len = response.data.posts.length; i < len; i++) {
+                post_title = response.data.post_types[response.data.posts[i].pt].label + ' &gt; ' + response.data.posts[i].ti;
                 wpuadminlauncher_settings.wpuadminlauncheritems.push({
-                    'label': response.data.post_types[response.data.posts[i].pt].label + ' &gt; ' + response.data.posts[i].ti,
+                    'label': post_title,
                     'icon': response.data.post_types[response.data.posts[i].pt].icon,
                     'link': wpuadminlauncher_settings.edit_url + response.data.posts[i].id,
-                    'cleanlabel': clean_string(response.data.posts[i].ti)
+                    'cleanlabel': clean_string(post_title)
                 });
             }
         });

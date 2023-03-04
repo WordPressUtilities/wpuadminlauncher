@@ -108,6 +108,7 @@ body:not([data-wpuadminlauncher-visible="1"]) .wpuadminlauncher {
     transform: translateY(-50%);
 }
 
+.wpuadminlauncher-autocomplete li[data-noresults="1"],
 .wpuadminlauncher-autocomplete li:hover,
 .wpuadminlauncher-autocomplete li[data-active="1"] {
     background-color: #F0F0F0;

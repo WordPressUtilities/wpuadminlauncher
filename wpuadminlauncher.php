@@ -4,7 +4,7 @@ Plugin Name: WPU Admin Launcher
 Plugin URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Update URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
-Version: 0.5.2
+Version: 0.5.3
 Author: Darklg
 Author URI: https://Darklg.me/
 Text Domain: wpuadminlauncher
@@ -14,7 +14,7 @@ License URI: https://opensource.org/licenses/MIT
 */
 
 class WPUAdminLauncher {
-    private $plugin_version = '0.5.2';
+    private $plugin_version = '0.5.3';
     private $plugin_settings = array(
         'id' => 'wpuadminlauncher',
         'name' => 'WPU Admin Launcher'
@@ -92,7 +92,8 @@ class WPUAdminLauncher {
             'wpuadminlauncheritems' => array(),
             'edit_url' => admin_url('post.php?action=edit&post='),
             'ajax_url' => admin_url('admin-ajax.php'),
-            'letter' => $this->settings_obj->get_setting('letter')
+            'letter' => $this->settings_obj->get_setting('letter'),
+            'str_noresults' => __('No results available', 'wpuadminlauncher')
         ));
     }
 

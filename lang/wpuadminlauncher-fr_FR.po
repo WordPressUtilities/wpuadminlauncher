@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Admin Launcher\n"
-"POT-Creation-Date: 2023-02-26 10:38+0100\n"
+"POT-Creation-Date: 2023-03-04 21:40+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -68,6 +68,10 @@ msgstr "Raccourci"
 msgid "Press CMD + this letter"
 msgstr "Appuyez sur CMD + cette lettre"
 
-#: .././wpuadminlauncher.php:86
+#: .././wpuadminlauncher.php:96
+msgid "No results available"
+msgstr "Aucun résultat disponible"
+
+#: .././wpuadminlauncher.php:101
 msgid "Type where you wish to go and press the Enter key"
 msgstr "Tapez où vous souhaitez aller et appuyez sur la touche Entrée"

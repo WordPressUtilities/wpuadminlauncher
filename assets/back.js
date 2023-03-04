@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isActiveItem) {
                 if (dir) {
                     var scrollPosTop = item.offsetTop + item.offsetHeight;
-                    if (dir == 'down' && scrollPosTop > list_height) {
+                    if (dir == 'down' && scrollPosTop > (list_height + $list.scrollTop)) {
                         $list.scrollTop = scrollPosTop - list_height;
                     }
                     if (dir == 'up' && $list.scrollTop > item.offsetTop) {
@@ -228,6 +228,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     list_max_results++;
                     list_active_results.push(wpuadminlauncher_settings.wpuadminlauncheritems[i]);
                 }
+            }
+            if (!list_html.length) {
+                list_html.push('<li data-noresults="1"><span class="inner"><span class="dashicons dashicons-warning"></span>' + wpuadminlauncher_settings.str_noresults + '</span></li>');
             }
         }
 

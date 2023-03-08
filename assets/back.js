@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     /* Build autocomplete values */
     (function() {
         /* Extract menu values */
-        Array.prototype.forEach.call(document.querySelectorAll('#wp-admin-bar-w3tc, #adminmenu > li'), function(el, i) {
+        Array.prototype.forEach.call(document.querySelectorAll('#wp-admin-bar-w3tc, #wp-admin-bar-view, #adminmenu > li'), function(el, i) {
             var $menu = el.querySelector('a:first-child');
             if (!$menu) {
                 return;
@@ -207,9 +207,29 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        var _value = this.value;
+        var _tmpItems = [];
+        /*
+        if (this.value.substring(0,6) == 'test12') {
+            _value = _value.substring(6);
+            _tmpItems = wpuadminlauncher_settings.wpuadminlauncheritems;
+            wpuadminlauncher_settings.wpuadminlauncheritems = [];
+            wpuadminlauncher_settings.wpuadminlauncheritems.push({
+                'cleanlabel': 'test1',
+                'label': 'test 1',
+                'link': '#'
+            });
+            wpuadminlauncher_settings.wpuadminlauncheritems.push({
+                'cleanlabel': 'test2',
+                'label': 'test 2',
+                'link': '#'
+            });
+        }
+        */
+
         /* Extract all words and init list */
         var list_html = [],
-            val = clean_string(this.value).split(' ').filter(function(el) {
+            val = clean_string(_value).split(' ').filter(function(el) {
                 return el;
             });
 
@@ -223,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (val.length) {
             /* Load actions */
             for (var i = 0, len = wpuadminlauncher_settings.wpuadminlauncheritems.length; i < len; i++) {
-                if (words_are_all_in_text(val, wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel)) {
+                if (words_are_all_in_text(val, wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel) ) {
                     list_html.push(build_list_item(i));
                     list_max_results++;
                     list_active_results.push(wpuadminlauncher_settings.wpuadminlauncheritems[i]);
@@ -238,6 +258,10 @@ document.addEventListener('DOMContentLoaded', function() {
         $list.innerHTML = list_html.join('');
         set_active_index();
         $autocompleteWrap.setAttribute('data-has-results', list_html ? 1 : 0);
+
+        if (_tmpItems && _tmpItems.length) {
+            wpuadminlauncher_settings.wpuadminlauncheritems = _tmpItems;
+        }
     });
 
     function clean_string(str) {

@@ -4,7 +4,7 @@ Plugin Name: WPU Admin Launcher
 Plugin URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Update URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
-Version: 0.5.4
+Version: 0.6.0
 Author: Darklg
 Author URI: https://Darklg.me/
 Text Domain: wpuadminlauncher
@@ -14,7 +14,7 @@ License URI: https://opensource.org/licenses/MIT
 */
 
 class WPUAdminLauncher {
-    private $plugin_version = '0.5.4';
+    private $plugin_version = '0.6.0';
     private $plugin_settings = array(
         'id' => 'wpuadminlauncher',
         'name' => 'WPU Admin Launcher'
@@ -91,6 +91,7 @@ class WPUAdminLauncher {
         wp_localize_script('wpuadminlauncher_back_script', 'wpuadminlauncher_settings', array(
             'wpuadminlauncheritems' => array(),
             'edit_url' => admin_url('post.php?action=edit&post='),
+            'edit_menu_url' => admin_url('nav-menus.php?action=edit&menu='),
             'ajax_url' => admin_url('admin-ajax.php'),
             'letter' => $this->settings_obj->get_setting('letter'),
             'str_noresults' => __('No results available', 'wpuadminlauncher')
@@ -159,7 +160,25 @@ class WPUAdminLauncher {
             }
         }
 
+        $menus = array();
+        if (current_user_can('edit_theme_options')) {
+            $menus_t = get_terms('nav_menu', array('hide_empty' => false));
+            $menus_obj = get_taxonomy('nav_menu');
+            $post_type_obj['nav_menu'] = array(
+                'icon' => 'dashicons-menu',
+                'label' => $menus_obj->label
+            );
+            foreach ($menus_t as $menu) {
+                $menus[] = array(
+                    'pt' => 'nav_menu',
+                    'id' => $menu->term_id,
+                    'ti' => $menu->name
+                );
+            }
+        }
+
         wp_send_json_success(array(
+            'menus' => $menus,
             'posts' => $posts,
             'post_types' => $post_type_obj
         ));

@@ -108,17 +108,34 @@ document.addEventListener('DOMContentLoaded', function() {
         jQuery.post(wpuadminlauncher_settings.ajax_url, {
             'action': 'wpuadminlauncher_posttypes',
         }, function(response) {
-            var post_title;
             wpuadminlauncher_settings.post_types_content = response.data.post_types;
-            for (var i = 0, len = response.data.posts.length; i < len; i++) {
-                post_title = response.data.post_types[response.data.posts[i].pt].label + ' &gt; ' + response.data.posts[i].ti;
-                wpuadminlauncher_settings.wpuadminlauncheritems.push({
-                    'label': post_title,
-                    'icon': response.data.post_types[response.data.posts[i].pt].icon,
-                    'link': wpuadminlauncher_settings.edit_url + response.data.posts[i].id,
-                    'cleanlabel': clean_string(post_title)
-                });
-            }
+            /* Post types */
+            (function() {
+                var post_title;
+                for (var i = 0, len = response.data.posts.length; i < len; i++) {
+                    post_title = response.data.post_types[response.data.posts[i].pt].label + ' &gt; ' + response.data.posts[i].ti;
+                    wpuadminlauncher_settings.wpuadminlauncheritems.push({
+                        'label': post_title,
+                        'icon': response.data.post_types[response.data.posts[i].pt].icon,
+                        'link': wpuadminlauncher_settings.edit_url + response.data.posts[i].id,
+                        'cleanlabel': clean_string(post_title)
+                    });
+                }
+            }());
+            /* Menus */
+            (function() {
+                var menu_title;
+                /* response.data.post_types - i */
+                for (var i = 0, len = response.data.menus.length; i < len; i++) {
+                    menu_title = 'Menus &gt; ' + response.data.menus[i].ti;
+                    wpuadminlauncher_settings.wpuadminlauncheritems.push({
+                        'label': menu_title,
+                        'icon': response.data.post_types[response.data.menus[i].pt].icon,
+                        'link': wpuadminlauncher_settings.edit_menu_url + response.data.menus[i].id,
+                        'cleanlabel': clean_string(menu_title)
+                    });
+                }
+            }());
         });
     }
 
@@ -243,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (val.length) {
             /* Load actions */
             for (var i = 0, len = wpuadminlauncher_settings.wpuadminlauncheritems.length; i < len; i++) {
-                if (words_are_all_in_text(val, wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel) ) {
+                if (words_are_all_in_text(val, wpuadminlauncher_settings.wpuadminlauncheritems[i].cleanlabel)) {
                     list_html.push(build_list_item(i));
                     list_max_results++;
                     list_active_results.push(wpuadminlauncher_settings.wpuadminlauncheritems[i]);

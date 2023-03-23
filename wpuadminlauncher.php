@@ -4,7 +4,7 @@ Plugin Name: WPU Admin Launcher
 Plugin URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Update URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
-Version: 0.6.0
+Version: 0.7.0
 Author: Darklg
 Author URI: https://Darklg.me/
 Text Domain: wpuadminlauncher
@@ -14,7 +14,7 @@ License URI: https://opensource.org/licenses/MIT
 */
 
 class WPUAdminLauncher {
-    private $plugin_version = '0.6.0';
+    private $plugin_version = '0.7.0';
     private $plugin_settings = array(
         'id' => 'wpuadminlauncher',
         'name' => 'WPU Admin Launcher'
@@ -92,6 +92,7 @@ class WPUAdminLauncher {
             'wpuadminlauncheritems' => array(),
             'edit_url' => admin_url('post.php?action=edit&post='),
             'edit_menu_url' => admin_url('nav-menus.php?action=edit&menu='),
+            'edit_user_url' => admin_url('user-edit.php?user_id='),
             'ajax_url' => admin_url('admin-ajax.php'),
             'letter' => $this->settings_obj->get_setting('letter'),
             'str_noresults' => __('No results available', 'wpuadminlauncher')
@@ -170,14 +171,31 @@ class WPUAdminLauncher {
             );
             foreach ($menus_t as $menu) {
                 $menus[] = array(
-                    'pt' => 'nav_menu',
                     'id' => $menu->term_id,
                     'ti' => $menu->name
                 );
             }
         }
 
+        $users = array();
+        if (current_user_can('edit_users')) {
+            $users_t = get_users(array(
+                'number' => 500
+            ));
+            $post_type_obj['users'] = array(
+                'icon' => 'dashicons-admin-users',
+                'label' => __('Users')
+            );
+            foreach ($users_t as $user) {
+                $users[] = array(
+                    'id' => $user->ID,
+                    'ti' => $user->display_name
+                );
+            }
+        }
+
         wp_send_json_success(array(
+            'users' => $users,
             'menus' => $menus,
             'posts' => $posts,
             'post_types' => $post_type_obj

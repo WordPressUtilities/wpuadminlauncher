@@ -125,14 +125,26 @@ document.addEventListener('DOMContentLoaded', function() {
             /* Menus */
             (function() {
                 var menu_title;
-                /* response.data.post_types - i */
                 for (var i = 0, len = response.data.menus.length; i < len; i++) {
-                    menu_title = 'Menus &gt; ' + response.data.menus[i].ti;
+                    menu_title = response.data.post_types.nav_menu.label + ' &gt; ' + response.data.menus[i].ti;
                     wpuadminlauncher_settings.wpuadminlauncheritems.push({
                         'label': menu_title,
-                        'icon': response.data.post_types[response.data.menus[i].pt].icon,
+                        'icon': response.data.post_types.nav_menu.icon,
                         'link': wpuadminlauncher_settings.edit_menu_url + response.data.menus[i].id,
                         'cleanlabel': clean_string(menu_title)
+                    });
+                }
+            }());
+            /* Users */
+            (function() {
+                var user_title;
+                for (var i = 0, len = response.data.users.length; i < len; i++) {
+                    user_title = response.data.post_types.users.label + ' &gt; ' + response.data.users[i].ti;
+                    wpuadminlauncher_settings.wpuadminlauncheritems.push({
+                        'label': user_title,
+                        'icon': response.data.post_types.users.icon,
+                        'link': wpuadminlauncher_settings.edit_user_url + response.data.users[i].id,
+                        'cleanlabel': clean_string(user_title)
                     });
                 }
             }());

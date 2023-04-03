@@ -51,18 +51,37 @@ document.addEventListener('DOMContentLoaded', function() {
     /* Build autocomplete values */
     (function() {
         /* Extract menu values */
-        Array.prototype.forEach.call(document.querySelectorAll('#wp-admin-bar-w3tc, #wp-admin-bar-view, #adminmenu > li'), function(el, i) {
+        Array.prototype.forEach.call(document.querySelectorAll('#wp-admin-bar-view, #adminmenu > li'), function(el, i) {
             var $menu = el.querySelector('a:first-child');
             if (!$menu) {
                 return;
             }
             var _menu_name = $menu.innerText.trim(),
-                _menu_link = $menu.getAttribute('href');
+                _menu_link = $menu.getAttribute('href'),
+                $icon = $menu.querySelector('.wp-menu-image'),
+                _parent = {
+                    'label': _menu_name,
+                    'link': _menu_link
+                };
+
+            var _main_icon = '';
+            if ($icon && $icon.classList) {
+                $icon.classList.forEach(function(value) {
+                    if (value == 'wp-menu-image' || value == 'dashicons-before') {
+                        return;
+                    }
+                    if (value.substring(0, 10) != 'dashicons-') {
+                        return;
+                    }
+                    _main_icon = value;
+                });
+                if (_main_icon) {
+                    _parent.icon = _main_icon;
+                }
+            }
+
             /* Parent menu */
-            wpuadminlauncher_settings.wpuadminlauncheritems.push({
-                'label': _menu_name,
-                'link': _menu_link
-            });
+            wpuadminlauncher_settings.wpuadminlauncheritems.push(_parent);
             /* Child elements */
             Array.prototype.forEach.call(el.querySelectorAll('ul a'), function(link, i) {
                 var _item_name = link.innerText.trim(),
@@ -71,10 +90,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (_item_name == _menu_name && _item_link == _menu_link) {
                     return;
                 }
-                wpuadminlauncher_settings.wpuadminlauncheritems.push({
+                var _item_parts = {
                     'label': _menu_name + ' &gt; ' + _item_name,
                     'link': link.getAttribute('href')
-                });
+                };
+                if (_main_icon) {
+                    _item_parts.icon = _main_icon;
+                }
+                wpuadminlauncher_settings.wpuadminlauncheritems.push(_item_parts);
             });
         });
 

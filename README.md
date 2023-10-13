@@ -1,5 +1,7 @@
 # WPU Admin Launcher
 
+[![PHP workflow](https://github.com/WordPressUtilities/wpuadminlauncher/actions/workflows/php.yml/badge.svg 'PHP workflow')](https://github.com/WordPressUtilities/wpuadminlauncher/actions) [![JS workflow](https://github.com/WordPressUtilities/wpuadminlauncher/actions/workflows/js.yml/badge.svg 'JS workflow')](https://github.com/WordPressUtilities/wpuadminlauncher/actions)
+
 WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
 
 ## Todo

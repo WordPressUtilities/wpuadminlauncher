@@ -48,15 +48,24 @@ document.addEventListener('DOMContentLoaded', function() {
         launcher_visible = false;
     }
 
+    function clean_menu_name($menu){
+        $menu = $menu.cloneNode(true);
+        Array.prototype.forEach.call($menu.querySelectorAll('span[class*="count"]'), function(el){
+            el.remove();
+        });
+        return $menu.innerText.trim();
+
+    }
+
     /* Build autocomplete values */
     (function() {
         /* Extract menu values */
-        Array.prototype.forEach.call(document.querySelectorAll('#wp-admin-bar-view, #adminmenu > li'), function(el, i) {
+        Array.prototype.forEach.call(document.querySelectorAll('#wp-admin-bar-view, #adminmenu > li'), function(el) {
             var $menu = el.querySelector('a:first-child');
             if (!$menu) {
                 return;
             }
-            var _menu_name = $menu.innerText.trim(),
+            var _menu_name = clean_menu_name($menu),
                 _menu_link = $menu.getAttribute('href'),
                 $icon = $menu.querySelector('.wp-menu-image'),
                 _parent = {
@@ -83,8 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
             /* Parent menu */
             wpuadminlauncher_settings.wpuadminlauncheritems.push(_parent);
             /* Child elements */
-            Array.prototype.forEach.call(el.querySelectorAll('ul a'), function(link, i) {
-                var _item_name = link.innerText.trim(),
+            Array.prototype.forEach.call(el.querySelectorAll('ul a'), function(link) {
+                var _item_name = clean_menu_name(link),
                     _item_link = link.getAttribute('href');
                 /* Avoid a duplicate menu item */
                 if (_item_name == _menu_name && _item_link == _menu_link) {
@@ -102,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         /* Extract actions */
-        Array.prototype.forEach.call(document.querySelectorAll('.submitbox input[type="submit"]'), function(el, i) {
+        Array.prototype.forEach.call(document.querySelectorAll('.submitbox input[type="submit"]'), function(el) {
             wpuadminlauncher_settings.wpuadminlauncheritems.push({
                 'label': el.value,
                 'icon': 'dashicons-button',

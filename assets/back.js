@@ -270,23 +270,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var _value = this.value;
         var _tmpItems = [];
-        /*
-        if (this.value.substring(0,6) == 'test12') {
-            _value = _value.substring(6);
-            _tmpItems = wpuadminlauncher_settings.wpuadminlauncheritems;
-            wpuadminlauncher_settings.wpuadminlauncheritems = [];
-            wpuadminlauncher_settings.wpuadminlauncheritems.push({
-                'cleanlabel': 'test1',
-                'label': 'test 1',
-                'link': '#'
-            });
-            wpuadminlauncher_settings.wpuadminlauncheritems.push({
-                'cleanlabel': 'test2',
-                'label': 'test 2',
-                'link': '#'
-            });
-        }
-        */
 
         /* Extract all words and init list */
         var list_html = [],

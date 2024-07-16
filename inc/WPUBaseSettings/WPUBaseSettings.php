@@ -4,13 +4,15 @@ namespace wpuadminlauncher;
 /*
 Class Name: WPU Base Settings
 Description: A class to handle native settings in WordPress admin
-Version: 0.17.6
+Version: 0.21.0
 Class URI: https://github.com/WordPressUtilities/wpubaseplugin
 Author: Darklg
 Author URI: https://darklg.me/
 License: MIT License
 License URI: https://opensource.org/licenses/MIT
 */
+
+defined('ABSPATH') || die;
 
 class WPUBaseSettings {
 
@@ -75,13 +77,7 @@ class WPUBaseSettings {
     }
 
     public function get_settings() {
-        $opt = get_option($this->settings_details['option_id']);
-        if (!is_array($opt)) {
-            /* Set default values */
-            $opt = $this->get_setting_values();
-            update_option($this->settings_details['option_id'], $opt);
-        }
-        return $opt;
+        return $this->get_setting_values();
     }
 
     public function get_setting($id, $lang = false) {
@@ -197,14 +193,29 @@ class WPUBaseSettings {
             'show_in_rest' => $this->settings_details,
             'default' => array()
         ));
+        $has_check_all = false;
         foreach ($this->settings_details['sections'] as $id => $section) {
-            if (current_user_can($section['user_cap'])) {
-                add_settings_section($id,
-                    $section['name'],
-                    isset($section['description']) ? $section['description'] : '',
-                    $this->settings_details['plugin_id']
-                );
+            if (!current_user_can($section['user_cap'])) {
+                continue;
             }
+            if (!isset($section['after_section'])) {
+                $section['after_section'] = '';
+            }
+            if (isset($section['wpubasesettings_checkall']) && $section['wpubasesettings_checkall']) {
+                $check_label = __('Check all', __NAMESPACE__);
+                $section['after_section'] .= '<button class="wpubasesettings-check-all" data-check-label="' . $check_label . '" data-uncheck-label="' . __('Uncheck all', __NAMESPACE__) . '">' . $check_label . '</button>';
+                if (!$has_check_all) {
+                    $has_check_all = true;
+                    add_action('admin_footer', array(&$this, 'admin_footer_checkall'));
+                }
+            }
+            add_settings_section(
+                $id,
+                $section['name'],
+                isset($section['description']) ? $section['description'] : '',
+                $this->settings_details['plugin_id'],
+                $section
+            );
         }
 
         foreach ($this->settings as $id => $input) {
@@ -223,6 +234,10 @@ class WPUBaseSettings {
                 'id' => $id,
                 'lang_id' => $lang_id,
                 'label_for' => $id,
+                'readonly' => isset($this->settings[$id]['readonly']) ? $this->settings[$id]['readonly'] : false,
+                'placeholder' => isset($this->settings[$id]['placeholder']) ? $this->settings[$id]['placeholder'] : false,
+                'attributes_html' => isset($this->settings[$id]['attributes_html']) ? $this->settings[$id]['attributes_html'] : false,
+                'translated_from' => isset($this->settings[$id]['translated_from']) ? $this->settings[$id]['translated_from'] : false,
                 'required' => $this->settings[$id]['required'],
                 'post_type' => $this->settings[$id]['post_type'],
                 'datas' => $this->settings[$id]['datas'],
@@ -314,12 +329,17 @@ class WPUBaseSettings {
         $name = ' name="' . $name_val . '" ';
         $id = ' id="' . $args['id'] . '" ';
         $attr = '';
+        if (isset($args['readonly']) && $args['readonly']) {
+            $attr .= ' readonly ';
+            $name = '';
+        }
         if (isset($args['lang_id']) && $args['lang_id']) {
             $attr .= ' data-wpulang="' . esc_attr($args['lang_id']) . '" ';
         }
         if (isset($args['required']) && $args['required']) {
             $attr .= ' required="required" ';
         }
+
         if (isset($args['placeholder']) && $args['placeholder']) {
             $attr .= ' placeholder="' . esc_attr($args['placeholder']) . '" ';
         }
@@ -328,6 +348,9 @@ class WPUBaseSettings {
         }
         $id .= $attr;
         $value = isset($options[$args['id']]) ? $options[$args['id']] : $args['default_value'];
+        if (!isset($options[$args['id']]) && isset($args['translated_from']) && $args['translated_from'] && isset($options[$args['translated_from']]) && $options[$args['translated_from']]) {
+            $value = $options[$args['translated_from']];
+        }
 
         switch ($args['type']) {
         case 'checkbox':
@@ -552,6 +575,36 @@ jQSelect.on('change', 'select',function(){
 });
 
 }());
+</script>
+EOT;
+    }
+
+    function admin_footer_checkall() {
+        echo <<<EOT
+<script>
+jQuery(document).ready(function() {
+    jQuery(".wpubasesettings-check-all").each(function() {
+        var _btn = jQuery(this),
+            _table = _btn.prev(".form-table"),
+            _checkboxes = _table.find(":checkbox"),
+            _check_all = true;
+
+        _btn.on("click", function(e) {
+            e.preventDefault();
+            _checkboxes.prop("checked", _check_all);
+            _checkboxes.trigger("change");
+        });
+
+        function check_checkboxes_mode() {
+            var _checked = _checkboxes.filter(":checked").length;
+            _check_all = _checked < _checkboxes.length;
+            _btn.text(_check_all ? _btn.data("check-label") : _btn.data("uncheck-label"));
+        }
+        _checkboxes.on("change", check_checkboxes_mode);
+        check_checkboxes_mode();
+
+    });
+});
 </script>
 EOT;
     }

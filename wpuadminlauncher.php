@@ -1,16 +1,18 @@
 <?php
+defined('ABSPATH') || die;
 /*
 Plugin Name: WPU Admin Launcher
 Plugin URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Update URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
-Version: 0.8.0
+Version: 0.8.1
 Author: Darklg
-Author URI: https://Darklg.me/
+Author URI: https://darklg.me/
 Text Domain: wpuadminlauncher
 Domain Path: /lang
 Requires at least: 6.2
 Requires PHP: 8.0
+Network: Optional
 License: MIT License
 License URI: https://opensource.org/licenses/MIT
 */
@@ -20,7 +22,7 @@ class WPUAdminLauncher {
     public $settings_details;
     public $settings;
     public $settings_update;
-    private $plugin_version = '0.8.0';
+    private $plugin_version = '0.8.1';
     private $plugin_settings = array(
         'id' => 'wpuadminlauncher',
         'name' => 'WPU Admin Launcher'
@@ -71,11 +73,11 @@ class WPUAdminLauncher {
                 'datas' => $letters
             )
         );
-        require_once dirname(__FILE__) . '/inc/WPUBaseSettings/WPUBaseSettings.php';
+        require_once __DIR__ . '/inc/WPUBaseSettings/WPUBaseSettings.php';
         $this->settings_obj = new \wpuadminlauncher\WPUBaseSettings($this->settings_details, $this->settings);
 
         # Auto update
-        require_once dirname(__FILE__) . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
+        require_once __DIR__ . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
         $this->settings_update = new \wpuadminlauncher\WPUBaseUpdate(
             'WordPressUtilities',
             'wpuadminlauncher',
@@ -116,7 +118,7 @@ class WPUAdminLauncher {
         echo '</div>';
     }
 
-    function wpuadminlauncher_posttypes() {
+    public function wpuadminlauncher_posttypes() {
 
         global $wp_post_statuses;
 

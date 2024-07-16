@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Admin Launcher\n"
-"POT-Creation-Date: 2023-03-04 21:40+0100\n"
+"POT-Creation-Date: 2024-07-16 19:11+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -12,43 +12,51 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-KeywordsList: __;_x;_e\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.4\n"
 "X-Poedit-SearchPath-0: ../.\n"
 "X-Poedit-SearchPathExcluded-0: inc/WPUBaseAdminDatas\n"
 "X-Poedit-SearchPathExcluded-1: inc/WPUBaseSettings\n"
 
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:136
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:552
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:559
-#: .././wpuadminlauncher.php:51
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:132
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:615
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:622
+#: .././wpuadminlauncher.php:59
 msgid "Settings"
 msgstr "Réglages"
 
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:165
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:162
 msgid "No"
-msgstr ""
+msgstr "Non"
 
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:165
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:162
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:301
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:205
+msgid "Check all"
+msgstr "Tout cocher"
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:206
+msgid "Uncheck all"
+msgstr "Tout décocher"
+
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:318
 msgid "Settings saved."
-msgstr "Paramètres sauvegardés."
+msgstr "Réglages enregistrés."
 
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:347
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:378
 msgid "Upload New Media"
-msgstr ""
+msgstr "Envoi d'un nouveau média"
 
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:498
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:531
 msgid "Language"
 msgstr "Langue"
 
-#: .././inc/WPUBaseSettings/WPUBaseSettings.php:574
+#: .././inc/WPUBaseSettings/WPUBaseSettings.php:637
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: .././wpuadminlauncher.php:39
+#: .././wpuadminlauncher.php:47
 msgid ""
 "WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k "
 "and enjoy."
@@ -56,22 +64,26 @@ msgstr ""
 "WPU Admin Launcher est un lanceur de tâches simple. Appuyez sur CMD+k or "
 "Ctrl+k et profitez."
 
-#: .././wpuadminlauncher.php:55
+#: .././wpuadminlauncher.php:63
 msgid "Default (K)"
 msgstr "Valeur par défaut (K)"
 
-#: .././wpuadminlauncher.php:62
+#: .././wpuadminlauncher.php:70
 msgid "Shortcut"
 msgstr "Raccourci"
 
-#: .././wpuadminlauncher.php:64
+#: .././wpuadminlauncher.php:72
 msgid "Press CMD + this letter"
 msgstr "Appuyez sur CMD + cette lettre"
 
-#: .././wpuadminlauncher.php:96
+#: .././wpuadminlauncher.php:106
 msgid "No results available"
 msgstr "Aucun résultat disponible"
 
-#: .././wpuadminlauncher.php:101
+#: .././wpuadminlauncher.php:111
 msgid "Type where you wish to go and press the Enter key"
 msgstr "Tapez où vous souhaitez aller et appuyez sur la touche Entrée"
+
+#: .././wpuadminlauncher.php:195
+msgid "Users"
+msgstr "Utilisateurs"

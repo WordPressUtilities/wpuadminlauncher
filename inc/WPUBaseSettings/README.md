@@ -28,7 +28,7 @@ $this->settings = array(
     )
 );
 if (is_admin()) {
-    include dirname( __FILE__ ) . '/inc/WPUBaseSettings/WPUBaseSettings.php';
+    require_once __DIR__ . '/inc/WPUBaseSettings/WPUBaseSettings.php';
     new \wpuimporttwitter\WPUBaseSettings($this->settings_details,$this->settings);
 }
 ```
@@ -36,6 +36,7 @@ if (is_admin()) {
 ## Insert in your admin page content ( if needed )
 
 ```php
+settings_errors();
 echo '<form action="' . admin_url('options.php') . '" method="post">';
 settings_fields($this->settings_details['option_id']);
 do_settings_sections($this->options['plugin_id']);

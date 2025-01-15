@@ -5,7 +5,7 @@ Plugin Name: WPU Admin Launcher
 Plugin URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Update URI: https://github.com/WordPressUtilities/wpuadminlauncher
 Description: WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.
-Version: 0.8.1
+Version: 0.8.2
 Author: Darklg
 Author URI: https://darklg.me/
 Text Domain: wpuadminlauncher
@@ -22,7 +22,7 @@ class WPUAdminLauncher {
     public $settings_details;
     public $settings;
     public $settings_update;
-    private $plugin_version = '0.8.1';
+    private $plugin_version = '0.8.2';
     private $plugin_settings = array(
         'id' => 'wpuadminlauncher',
         'name' => 'WPU Admin Launcher'
@@ -30,7 +30,8 @@ class WPUAdminLauncher {
     private $settings_obj;
 
     public function __construct() {
-        add_filter('plugins_loaded', array(&$this, 'plugins_loaded'));
+        add_action('init', array(&$this, 'load_translation'));
+        add_action('init', array(&$this, 'init'));
 
         # Back Assets
         add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
@@ -39,12 +40,19 @@ class WPUAdminLauncher {
         add_action('admin_footer', array(&$this, 'display_launcher'));
     }
 
-    public function plugins_loaded() {
+    public function load_translation() {
         # TRANSLATION
-        if (!load_plugin_textdomain('wpuadminlauncher', false, dirname(plugin_basename(__FILE__)) . '/lang/')) {
-            load_muplugin_textdomain('wpuadminlauncher', dirname(plugin_basename(__FILE__)) . '/lang/');
+        $lang_dir = dirname(plugin_basename(__FILE__)) . '/lang/';
+        if (strpos(__DIR__, 'mu-plugins') !== false) {
+            load_muplugin_textdomain('wpuadminlauncher', $lang_dir);
+        } else {
+            load_plugin_textdomain('wpuadminlauncher', false, $lang_dir);
         }
         $this->plugin_description = __('WPU Admin Launcher is a simple tasks launcher. Just press CMD+k or Ctrl+k and enjoy.', 'wpuadminlauncher');
+
+    }
+
+    public function init() {
         # SETTINGS
         $this->settings_details = array(
             # Admin page
